@@ -63,6 +63,17 @@ class TagsLayoutViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        title = "Categories"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedString.Key.font: UIFont.monospacedSystemFont(ofSize: 16, weight: .medium)
+        ]
+        navigationController?.navigationBar.largeTitleTextAttributes = [
+            .font: UIFont.monospacedSystemFont(ofSize: 32, weight: .bold),
+        ]
+
+        
         view.addSubview(collectionView)
         collectionView.fitIn(view)
 

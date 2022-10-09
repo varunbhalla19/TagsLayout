@@ -28,9 +28,17 @@ class TagsLayoutViewController: UIViewController {
         view.setup(with: [.clear, .purple], locations: [0, 2], start: .init(x: 0.5, y: 0), end: .init(x: 1, y: 1))
         return view
     }()
+    
+    lazy var refreshControl: UIRefreshControl = {
+        let control = UIRefreshControl.init()
+        control.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
+        return control
+    }()
+    
     lazy var collectionView: UICollectionView = {
         let view = UICollectionView.init(frame: view.bounds, collectionViewLayout: getLayout())
         view.delegate = self
+        view.refreshControl = refreshControl
         view.backgroundColor = .clear
         view.register(TagCell.self, forCellWithReuseIdentifier: TagCell.identifier)
         return view
@@ -76,12 +84,19 @@ class TagsLayoutViewController: UIViewController {
         dataSource.apply(snapshot, animatingDifferences: true)
     }
 
+    @objc func refreshTags(){
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: .init {
+            self.tags = Tag.tags
+            self.applySnapshot(with: Tag.tags.map { $0.id })
+            self.refreshControl.endRefreshing()
+        })
+    }
+    
 }
 
 extension TagsLayoutViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let id = dataSource.itemIdentifier(for: indexPath) {
-            let tag = Tag.tag(for: id)
             tags = tags.filter { $0.id != id }
             applySnapshot(with: tags.map{ $0.id })
         }

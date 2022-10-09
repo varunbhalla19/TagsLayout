@@ -23,10 +23,15 @@ class TagsLayoutViewController: UIViewController {
     
     lazy var tags = Tag.tags
     
+    lazy var gradientView: GradientView = {
+        let view = GradientView.init()
+        view.setup(with: [.clear, .purple], locations: [0, 2], start: .init(x: 0.5, y: 0), end: .init(x: 1, y: 1))
+        return view
+    }()
     lazy var collectionView: UICollectionView = {
         let view = UICollectionView.init(frame: view.bounds, collectionViewLayout: getLayout())
         view.delegate = self
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .clear
         view.register(TagCell.self, forCellWithReuseIdentifier: TagCell.identifier)
         return view
     }()
@@ -52,7 +57,16 @@ class TagsLayoutViewController: UIViewController {
         super.viewDidLoad()
         view.addSubview(collectionView)
         collectionView.fitIn(view)
+
+        gradientView.layer.frame = view.frame
+        view.layer.addSublayer(gradientView.layer)
+
         applySnapshot(with: tags.map{ $0.id })
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        gradientView.layer.frame = view.bounds
     }
     
     func applySnapshot(with ids: [Tag.ID]) {

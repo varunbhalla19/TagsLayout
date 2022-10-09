@@ -101,6 +101,19 @@ class TagCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override var isHighlighted: Bool {
+        didSet {
+            let duration = isHighlighted ? 0.5 : 0.4
+            let transform = isHighlighted ? CGAffineTransform.init(scaleX: 0.95, y: 0.95): .identity
+            let alpha = isHighlighted ? 0.7 : 1
+            UIView.animate(
+                withDuration: duration, delay: .zero, usingSpringWithDamping: 1, initialSpringVelocity: .zero, options: [.allowUserInteraction, .beginFromCurrentState]) {
+                    self.alpha = alpha
+                    self.transform = transform
+            }
+        }
+    }
+    
 }
 
 

@@ -87,15 +87,25 @@ class TagCell: UICollectionViewCell {
         return view
     }()
     
+    lazy var gradientView = GradientView.init()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         contentView.layer.borderColor = UIColor.white.cgColor
         contentView.layer.borderWidth = 1
         contentView.layer.cornerRadius = 8
+        contentView.clipsToBounds = true
         
+        contentView.addSubview(gradientView)
         contentView.addSubview(label)
+
+        gradientView.setup(
+            with: [.systemIndigo, .purple], locations: [-0.5, 1.5], start: .zero, end: .init(x: 1, y: 1)
+        )
+        
         label.fitIn(contentView, padding: .init(top: 8, left: 8, bottom: 8, right: 8))
+        gradientView.fitIn(contentView)
     }
     
     required init?(coder: NSCoder) {
@@ -117,6 +127,21 @@ class TagCell: UICollectionViewCell {
     
 }
 
+class GradientView: UIView {
+    
+    override class var layerClass: AnyClass {
+        CAGradientLayer.self
+    }
+    
+    func setup (with colors: [UIColor], locations: [NSNumber]? = nil, start: CGPoint = .init(x: 0.5, y: 0), end: CGPoint = .init(x: 0.5, y: 1)) {
+        guard let layer = layer as? CAGradientLayer else { return }
+        layer.colors = colors.map { $0.cgColor }
+        layer.locations = locations
+        layer.startPoint = start
+        layer.endPoint = end
+    }
+    
+}
 
 extension UIView {
     func fitIn(_ view: UIView, padding: UIEdgeInsets = .zero) {

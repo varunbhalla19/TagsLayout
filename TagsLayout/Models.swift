@@ -19,6 +19,10 @@ struct Tag: Identifiable {
         "UIViewController", "Lazy", "Tags", "Random", "Words", "Apple", "Vegetables", "Hey", "Banana", "Potato", "Facebook", "Instagram", "Twitter", "Reddit", "Music", "Technology", "iOS", "Android", "Swift", "Kotlin", "React", "Jetpack Compose", "UIKit", "SwiftUI", "Phones", "Tag Layout", "Functions", "Lists", "Map", "Reduce", "String", "Int", "Double", "Section", "Data Source", "Snapshot"
     ]
     
-    private static let tags = Self.tagStrings.map(Tag.init(title:))
+    static let tags = Self.tagStrings.map(Tag.init(title:))
     
+    static func tag(for id: Tag.ID) -> Tag {
+        guard let tag = tags.first (where: { tag in tag.id == id }) else { fatalError("invalid tag.id") }
+        return tag
+    }
 }

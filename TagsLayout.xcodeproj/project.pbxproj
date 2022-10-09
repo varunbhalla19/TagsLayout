@@ -42,7 +42,6 @@
 		D5CB5E6C28F2B1FD001C92DD = {
 			isa = PBXGroup;
 			children = (
-				D5CB5E8D28F2B633001C92DD /* Models.swift */,
 				D5CB5E7728F2B1FD001C92DD /* TagsLayout */,
 				D5CB5E7628F2B1FD001C92DD /* Products */,
 			);
@@ -59,6 +58,7 @@
 		D5CB5E7728F2B1FD001C92DD /* TagsLayout */ = {
 			isa = PBXGroup;
 			children = (
+				D5CB5E8D28F2B633001C92DD /* Models.swift */,
 				D5CB5E7828F2B1FD001C92DD /* AppDelegate.swift */,
 				D5CB5E7A28F2B1FD001C92DD /* SceneDelegate.swift */,
 				D5CB5E7C28F2B1FD001C92DD /* TagsLayoutViewController.swift */,

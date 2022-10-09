@@ -52,13 +52,13 @@ class TagsLayoutViewController: UIViewController {
         super.viewDidLoad()
         view.addSubview(collectionView)
         collectionView.fitIn(view)
-        applySnapshot()
+        applySnapshot(with: tags.map{ $0.id })
     }
     
-    func applySnapshot() {
+    func applySnapshot(with ids: [Tag.ID]) {
         var snapshot = Snapshot.init()
         snapshot.appendSections([Section.one])
-        snapshot.appendItems(tags.map({ $0.id }))
+        snapshot.appendItems(ids)
         dataSource.apply(snapshot, animatingDifferences: true)
     }
 
@@ -68,7 +68,8 @@ extension TagsLayoutViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let id = dataSource.itemIdentifier(for: indexPath) {
             let tag = Tag.tag(for: id)
-            print("Pressed: \(tag.title)")
+            tags = tags.filter { $0.id != id }
+            applySnapshot(with: tags.map{ $0.id })
         }
     }
 }
